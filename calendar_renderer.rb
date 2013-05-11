@@ -9,27 +9,24 @@ class CalendarRenderer
     @last  = Date.new(year, month, -1)
   end
 
-  def render
+  def to_s
     calendar  = @first.strftime("%B %Y").center(WIDTH) + "\n"
     calendar += "Su Mo Tu We Th Fr Sa\n"
 
-    if @first.wday != 0
-      @first.wday.times do
-        calendar += "   "
-      end
+    calendar += "   " * @first.wday
+
+    @first.step(@last) do |date|
+      calendar += date.strftime("%e") + " "
+      calendar += "\n" if date.saturday?
     end
 
-    for d in 1..@last.day do
-      if @first.wday == 6
-        calendar += sprintf("%2s",d)+"\n"
-      else
-        calendar += sprintf("%2s ",d)
-      end
-      @first = @first.next
-    end
+    calendar + "\n"
+  end
 
-    puts calendar
-    calendar += "\n"
+  def render
+    puts to_s
   end
 
 end
+
+1.step(12) {|m| puts CalendarRenderer.new(2013, m).to_s }
