@@ -29,4 +29,4 @@ class CalendarRenderer
 
 end
 
-1.step(12) {|m| puts CalendarRenderer.new(2013, m).to_s }
+# 1.step(12) {|m| puts CalendarRenderer.new(2013, m).to_s }
