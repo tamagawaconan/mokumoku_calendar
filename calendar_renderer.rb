@@ -1,13 +1,35 @@
+require 'date'
+
 class CalendarRenderer
-  def render
-   <<EOS
-      May 2013       
-Su Mo Tu We Th Fr Sa
-          1  2  3  4 
- 5  6  7  8  9 10 11 
-12 13 14 15 16 17 18 
-19 20 21 22 23 24 25 
-26 27 28 29 30 31
-EOS
+
+  WIDTH = 3 * 7
+
+  def initialize(year, month)
+    @first = Date.new(year, month)
+    @last  = Date.new(year, month, -1)
   end
+
+  def render
+    calendar  = @first.strftime("%B %Y").center(WIDTH) + "\n"
+    calendar += "Su Mo Tu We Th Fr Sa\n"
+
+    if @first.wday != 0
+      @first.wday.times do
+        calendar += "   "
+      end
+    end
+
+    for d in 1..@last.day do
+      if @first.wday == 6
+        calendar += sprintf("%2s",d)+"\n"
+      else
+        calendar += sprintf("%2s ",d)
+      end
+      @first = @first.next
+    end
+
+    puts calendar
+    calendar += "\n"
+  end
+
 end
